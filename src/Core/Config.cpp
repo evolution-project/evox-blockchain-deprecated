@@ -40,6 +40,7 @@ AppConfig GlobalConfig;
 #define MIN_DISCORD_ACCOUNT_IN_DAYS             (7.0*MICROSECOND_DAY)   // Days
 #define FAUCET_TIMEOUT                          (16.0*MICROSECOND_HOUR) // Hours
 #define VALID_ADDRESS_LENGTH                    97
+#define INTEGRATED_ADDRESS_LENGTH               108
 #define TICKET_COST                             100 // Coins
 #define FACUET_DONATION_PERCENT                 0.20
 #define NO_WINNER_CHANCE                        0.20
