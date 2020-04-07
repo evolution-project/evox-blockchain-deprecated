@@ -80,10 +80,10 @@ as follows:
 cd ~
 
 # download the source code
-git clone https://github.com/evolution-project/blockchain.git
+git clone https://github.com/evolution-project/evox-blockchain.git
 
 # enter the downloaded sourced code folder
-cd explorer-evolution
+cd evox-blockchain
 
 # make a build folder and enter it
 mkdir build && cd build
@@ -191,7 +191,7 @@ alias evoblocksmainnet='~/blockchain-explorer/build/evoblocks    --port 8081 --t
 alias evoblockstestnet='~/blockchain-explorer/build/evoblocks -t --port 8082 --mainnet-url "http://139.162.32.245:8081" --enable-pusher --enable-emission-monitor'
 ```
 
-These are aliases similar to those used for http://evolution-project.go.ro:90/ .
+These are aliases similar to those used for http://evolutionproject.space:90/ .
 
 ## Enable Evolution emission
 
