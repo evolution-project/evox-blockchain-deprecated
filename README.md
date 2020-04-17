@@ -191,7 +191,7 @@ alias evoblocksmainnet='~/blockchain-explorer/build/evoblocks    --port 8081 --t
 alias evoblockstestnet='~/blockchain-explorer/build/evoblocks -t --port 8082 --mainnet-url "http://139.162.32.245:8081" --enable-pusher --enable-emission-monitor'
 ```
 
-These are aliases similar to those used for http://evolutionproject.space:90/ .
+These are aliases similar to those used for http://explorer.evolutionproject.space/ .
 
 ## Enable Evolution emission
 
