@@ -125,6 +125,7 @@ set(LIBRARIES
         version
         epee
         sodium
+        zmq
         ${Boost_LIBRARIES}
         pthread
         unbound
