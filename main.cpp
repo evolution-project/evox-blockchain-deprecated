@@ -251,7 +251,7 @@ main(int ac, const char* av[])
 
     // create instance of page class which
     // contains logic for the website
-    xmreg::page evoblocks(&mcore,
+    xmreg::page evoxblocks(&mcore,
                           core_storage,
                           deamon_url,
                           nettype,
@@ -286,61 +286,61 @@ main(int ac, const char* av[])
 
     CROW_ROUTE(app, "/")
     ([&](const crow::request& req) {
-      return crow::response(evoblocks.index2());
+      return crow::response(evoxblocks.index2());
     });
 
     CROW_ROUTE(app, "/page/<uint>")
     ([&](size_t page_no) {
-        return evoblocks.index2(page_no);
+        return evoxblocks.index2(page_no);
     });
 
     CROW_ROUTE(app, "/block/<uint>")
     ([&](const crow::request& req, size_t block_height) {
-        return crow::response(evoblocks.show_block(block_height));
+        return crow::response(evoxblocks.show_block(block_height));
     });
 
     CROW_ROUTE(app, "/block/<string>")
     ([&](const crow::request& req, string block_hash) {
-        return crow::response(evoblocks.show_block(remove_bad_chars(block_hash)));
+        return crow::response(evoxblocks.show_block(remove_bad_chars(block_hash)));
     });
 
     CROW_ROUTE(app, "/tx/<string>")
     ([&](string tx_hash) {
-        return crow::response(evoblocks.show_tx(remove_bad_chars(tx_hash)));
+        return crow::response(evoxblocks.show_tx(remove_bad_chars(tx_hash)));
     });
 
     if (enable_as_hex)
     {
         CROW_ROUTE(app, "/txhex/<string>")
         ([&](string tx_hash) {
-            return crow::response(evoblocks.show_tx_hex(remove_bad_chars(tx_hash)));
+            return crow::response(evoxblocks.show_tx_hex(remove_bad_chars(tx_hash)));
         });
 
         CROW_ROUTE(app, "/ringmembershex/<string>")
         ([&](string tx_hash) {
-            return crow::response(evoblocks.show_ringmembers_hex(remove_bad_chars(tx_hash)));
+            return crow::response(evoxblocks.show_ringmembers_hex(remove_bad_chars(tx_hash)));
         });
 
         CROW_ROUTE(app, "/blockhex/<uint>")
         ([&](size_t block_height) {
-            return crow::response(evoblocks.show_block_hex(block_height, false));
+            return crow::response(evoxblocks.show_block_hex(block_height, false));
         });
 
         CROW_ROUTE(app, "/blockhexcomplete/<uint>")
         ([&](size_t block_height) {
-            return crow::response(evoblocks.show_block_hex(block_height, true));
+            return crow::response(evoxblocks.show_block_hex(block_height, true));
         });
 
         CROW_ROUTE(app, "/ringmemberstxhex/<string>")
         ([&](string tx_hash) {
-            return myxmr::jsonresponse {evoblocks.show_ringmemberstx_jsonhex(remove_bad_chars(tx_hash))};
+            return myxmr::jsonresponse {evoxblocks.show_ringmemberstx_jsonhex(remove_bad_chars(tx_hash))};
         });
     }
 
     CROW_ROUTE(app, "/tx/<string>/<uint>")
     ([&](string tx_hash, uint16_t with_ring_signatures)
      {
-        return evoblocks.show_tx(remove_bad_chars(tx_hash), with_ring_signatures);
+        return evoxblocks.show_tx(remove_bad_chars(tx_hash), with_ring_signatures);
     });
 
     CROW_ROUTE(app, "/myoutputs").methods("POST"_method)
@@ -350,15 +350,15 @@ main(int ac, const char* av[])
         map<std::string, std::string> post_body
                 = xmreg::parse_crow_post_data(req.body);
 
-        if (post_body.count("evo_address") == 0
+        if (post_body.count("evox_address") == 0
             || post_body.count("viewkey") == 0
             || post_body.count("tx_hash") == 0)
         {
-            return string("EVO address, viewkey or tx hash not provided");
+            return string("EVOX address, viewkey or tx hash not provided");
         }
 
         string tx_hash     = remove_bad_chars(post_body["tx_hash"]);
-        string evo_address = remove_bad_chars(post_body["evo_address"]);
+        string evox_address = remove_bad_chars(post_body["evox_address"]);
         string viewkey     = remove_bad_chars(post_body["viewkey"]);
 
         // this will be only not empty when checking raw tx data
@@ -367,17 +367,17 @@ main(int ac, const char* av[])
 
         string domain      =  get_domain(req);
 
-        return evoblocks.show_my_outputs(tx_hash, evo_address, viewkey, raw_tx_data, domain);
+        return evoxblocks.show_my_outputs(tx_hash, evox_address, viewkey, raw_tx_data, domain);
     });
 
     CROW_ROUTE(app, "/myoutputs/<string>/<string>/<string>")
     ([&](const crow::request& req, string tx_hash,
-        string evo_address, string viewkey)
+        string evox_address, string viewkey)
      {
 
         string domain = get_domain(req);
 
-        return evoblocks.show_my_outputs(remove_bad_chars(tx_hash), remove_bad_chars(evo_address), remove_bad_chars(viewkey), string {}, domain);
+        return evoxblocks.show_my_outputs(remove_bad_chars(tx_hash), remove_bad_chars(evox_address), remove_bad_chars(viewkey), string {}, domain);
     });
 
     CROW_ROUTE(app, "/prove").methods("POST"_method)
@@ -386,17 +386,17 @@ main(int ac, const char* av[])
             map<std::string, std::string> post_body
                     = xmreg::parse_crow_post_data(req.body);
 
-            if (post_body.count("evoaddress") == 0
+            if (post_body.count("evoxaddress") == 0
                 || post_body.count("txprvkey") == 0
                 || post_body.count("txhash") == 0)
             {
-                return string("EVO address, tx private key or "
+                return string("EVOX address, tx private key or "
                                       "tx hash not provided");
             }
 
             string tx_hash     = remove_bad_chars(post_body["txhash"]);
             string tx_prv_key  = remove_bad_chars(post_body["txprvkey"]);
-            string evo_address = remove_bad_chars(post_body["evoaddress"]);
+            string evox_address = remove_bad_chars(post_body["evoxaddress"]);
 
             // this will be only not empty when checking raw tx data
             // using tx pusher
@@ -404,24 +404,24 @@ main(int ac, const char* av[])
 
             string domain      = get_domain(req);
 
-            return evoblocks.show_prove(tx_hash, evo_address, tx_prv_key, raw_tx_data, domain);
+            return evoxblocks.show_prove(tx_hash, evox_address, tx_prv_key, raw_tx_data, domain);
     });
 
 
     CROW_ROUTE(app, "/prove/<string>/<string>/<string>")
     ([&](const crow::request& req, string tx_hash,
-         string evo_address, string tx_prv_key) {
+         string evox_address, string tx_prv_key) {
 
         string domain = get_domain(req);
 
-        return evoblocks.show_prove(remove_bad_chars(tx_hash), remove_bad_chars(evo_address), remove_bad_chars(tx_prv_key), string {}, domain);
+        return evoxblocks.show_prove(remove_bad_chars(tx_hash), remove_bad_chars(evox_address), remove_bad_chars(tx_prv_key), string {}, domain);
     });
 
     if (enable_pusher)
     {
         CROW_ROUTE(app, "/rawtx")
         ([&](const crow::request& req) {
-            return evoblocks.show_rawtx();
+            return evoxblocks.show_rawtx();
         });
 
         CROW_ROUTE(app, "/checkandpush").methods("POST"_method)
@@ -439,9 +439,9 @@ main(int ac, const char* av[])
             string action      = remove_bad_chars(post_body["action"]);
 
             if (action == "check")
-                return evoblocks.show_checkrawtx(raw_tx_data, action);
+                return evoxblocks.show_checkrawtx(raw_tx_data, action);
             else if (action == "push")
-                return evoblocks.show_pushrawtx(raw_tx_data, action);
+                return evoxblocks.show_pushrawtx(raw_tx_data, action);
             return string("Provided action is neither check nor push");
 
         });
@@ -451,7 +451,7 @@ main(int ac, const char* av[])
     {
         CROW_ROUTE(app, "/rawkeyimgs")
         ([&](const crow::request& req) {
-            return evoblocks.show_rawkeyimgs();
+            return evoxblocks.show_rawkeyimgs();
         });
 
         CROW_ROUTE(app, "/checkrawkeyimgs").methods("POST"_method)
@@ -473,7 +473,7 @@ main(int ac, const char* av[])
             string raw_data = remove_bad_chars(post_body["rawkeyimgsdata"]);
             string viewkey  = remove_bad_chars(post_body["viewkey"]);
 
-            return evoblocks.show_checkrawkeyimgs(raw_data, viewkey);
+            return evoxblocks.show_checkrawkeyimgs(raw_data, viewkey);
         });
     }
 
@@ -482,7 +482,7 @@ main(int ac, const char* av[])
     {
         CROW_ROUTE(app, "/rawoutputkeys")
         ([&](const crow::request& req) {
-            return evoblocks.show_rawoutputkeys();
+            return evoxblocks.show_rawoutputkeys();
         });
 
         CROW_ROUTE(app, "/checkrawoutputkeys").methods("POST"_method)
@@ -505,30 +505,30 @@ main(int ac, const char* av[])
             string raw_data = remove_bad_chars(post_body["rawoutputkeysdata"]);
             string viewkey  = remove_bad_chars(post_body["viewkey"]);
 
-            return evoblocks.show_checkcheckrawoutput(raw_data, viewkey);
+            return evoxblocks.show_checkcheckrawoutput(raw_data, viewkey);
         });
     }
 
 
     CROW_ROUTE(app, "/search").methods("GET"_method)
     ([&](const crow::request& req) {
-        return evoblocks.search(remove_bad_chars(string(req.url_params.get("value"))));
+        return evoxblocks.search(remove_bad_chars(string(req.url_params.get("value"))));
     });
 
     CROW_ROUTE(app, "/mempool")
     ([&](const crow::request& req) {
-        return evoblocks.mempool(true);
+        return evoxblocks.mempool(true);
     });
 
     // alias to  "/mempool"
     CROW_ROUTE(app, "/txpool")
     ([&](const crow::request& req) {
-        return evoblocks.mempool(true);
+        return evoxblocks.mempool(true);
     });
 
 //    CROW_ROUTE(app, "/altblocks")
 //    ([&](const crow::request& req) {
-//        return evoblocks.altblocks();
+//        return evoxblocks.altblocks();
 //    });
 
     CROW_ROUTE(app, "/robots.txt")
@@ -538,8 +538,8 @@ main(int ac, const char* av[])
         return text;
     });
 
-    CROW_ROUTE(app, "/blockchain.js")([&]() { return evoblocks.get_blockchain_js(); });
-    CROW_ROUTE(app, "/css/style.css")([&]() { return evoblocks.get_css(); });
+    CROW_ROUTE(app, "/blockchain.js")([&]() { return evoxblocks.get_blockchain_js(); });
+    CROW_ROUTE(app, "/css/style.css")([&]() { return evoxblocks.get_css(); });
 
     if (enable_js)
     {
@@ -547,54 +547,54 @@ main(int ac, const char* av[])
 
         CROW_ROUTE(app, "/js/jquery.min.js")
         ([&](const crow::request& req) {
-            return evoblocks.get_js_file("jquery.min.js");
+            return evoxblocks.get_js_file("jquery.min.js");
         });
 
         CROW_ROUTE(app, "/js/crc32.js")
         ([&](const crow::request& req) {
-            return evoblocks.get_js_file("crc32.js");
+            return evoxblocks.get_js_file("crc32.js");
         });
 
         CROW_ROUTE(app, "/js/biginteger.js")
         ([&](const crow::request& req) {
-            return evoblocks.get_js_file("biginteger.js");
+            return evoxblocks.get_js_file("biginteger.js");
         });
 
         CROW_ROUTE(app, "/js/crypto.js")
         ([&](const crow::request& req) {
-            return evoblocks.get_js_file("crypto.js");
+            return evoxblocks.get_js_file("crypto.js");
         });
 
         CROW_ROUTE(app, "/js/config.js")
         ([&](const crow::request& req) {
-            return evoblocks.get_js_file("config.js");
+            return evoxblocks.get_js_file("config.js");
         });
 
         CROW_ROUTE(app, "/js/nacl-fast-cn.js")
         ([&](const crow::request& req) {
-            return evoblocks.get_js_file("nacl-fast-cn.js");
+            return evoxblocks.get_js_file("nacl-fast-cn.js");
         });
 
         CROW_ROUTE(app, "/js/base58.js")
         ([&](const crow::request& req) {
-            return evoblocks.get_js_file("base58.js");
+            return evoxblocks.get_js_file("base58.js");
         });
 
         CROW_ROUTE(app, "/js/cn_util.js")
         ([&](const crow::request& req) {
-            return evoblocks.get_js_file("cn_util.js");
+            return evoxblocks.get_js_file("cn_util.js");
         });
 
         CROW_ROUTE(app, "/js/sha3.js")
         ([&](const crow::request& req) {
-            return evoblocks.get_js_file("sha3.js");
+            return evoxblocks.get_js_file("sha3.js");
         });
 
         CROW_ROUTE(app, "/js/all_in_one.js")
         ([&](const crow::request& req) {
             // /js/all_in_one.js file does not exist. it is generated on the fly
             // from the above real files.
-            return evoblocks.get_js_file("all_in_one.js");
+            return evoxblocks.get_js_file("all_in_one.js");
         });
 
     } // if (enable_js)
@@ -606,13 +606,13 @@ main(int ac, const char* av[])
 
 	CROW_ROUTE(app, "/api")
         ([&](const crow::request& req) {
-            return crow::response(evoblocks.api());
+            return crow::response(evoxblocks.api());
         });
 
         CROW_ROUTE(app, "/api/transaction/<string>")
         ([&](const crow::request &req, string tx_hash) {
 
-            myxmr::jsonresponse r{evoblocks.json_transaction(remove_bad_chars(tx_hash))};
+            myxmr::jsonresponse r{evoxblocks.json_transaction(remove_bad_chars(tx_hash))};
 
             return r;
         });
@@ -620,7 +620,7 @@ main(int ac, const char* av[])
         CROW_ROUTE(app, "/api/rawtransaction/<string>")
         ([&](const crow::request &req, string tx_hash) {
 
-            myxmr::jsonresponse r{evoblocks.json_rawtransaction(remove_bad_chars(tx_hash))};
+            myxmr::jsonresponse r{evoxblocks.json_rawtransaction(remove_bad_chars(tx_hash))};
 
             return r;
         });
@@ -628,7 +628,7 @@ main(int ac, const char* av[])
         CROW_ROUTE(app, "/api/block/<string>")
         ([&](const crow::request &req, string block_no_or_hash) {
 
-            myxmr::jsonresponse r{evoblocks.json_block(remove_bad_chars(block_no_or_hash))};
+            myxmr::jsonresponse r{evoxblocks.json_block(remove_bad_chars(block_no_or_hash))};
 
             return r;
         });
@@ -636,7 +636,7 @@ main(int ac, const char* av[])
         CROW_ROUTE(app, "/api/rawblock/<string>")
         ([&](const crow::request &req, string block_no_or_hash) {
 
-            myxmr::jsonresponse r{evoblocks.json_rawblock(remove_bad_chars(block_no_or_hash))};
+            myxmr::jsonresponse r{evoxblocks.json_rawblock(remove_bad_chars(block_no_or_hash))};
 
             return r;
         });
@@ -650,7 +650,7 @@ main(int ac, const char* av[])
             string limit = regex_search(req.raw_url, regex {"limit=\\d+"}) ?
                            req.url_params.get("limit") : "25";
 
-            myxmr::jsonresponse r{evoblocks.json_transactions(
+            myxmr::jsonresponse r{evoxblocks.json_transactions(
                     remove_bad_chars(page), remove_bad_chars(limit))};
 
             return r;
@@ -668,7 +668,7 @@ main(int ac, const char* av[])
             string limit = regex_search(req.raw_url, regex {"limit=\\d+"}) ?
                            req.url_params.get("limit") : "100000000";
 
-            myxmr::jsonresponse r{evoblocks.json_mempool(
+            myxmr::jsonresponse r{evoxblocks.json_mempool(
                     remove_bad_chars(page), remove_bad_chars(limit))};
 
             return r;
@@ -677,7 +677,7 @@ main(int ac, const char* av[])
         CROW_ROUTE(app, "/api/search/<string>")
         ([&](const crow::request &req, string search_value) {
 
-            myxmr::jsonresponse r{evoblocks.json_search(remove_bad_chars(search_value))};
+            myxmr::jsonresponse r{evoxblocks.json_search(remove_bad_chars(search_value))};
 
             return r;
         });
@@ -685,7 +685,7 @@ main(int ac, const char* av[])
         CROW_ROUTE(app, "/api/networkinfo")
         ([&](const crow::request &req) {
 
-            myxmr::jsonresponse r{evoblocks.json_networkinfo()};
+            myxmr::jsonresponse r{evoxblocks.json_networkinfo()};
 
             return r;
         });
@@ -693,7 +693,7 @@ main(int ac, const char* av[])
         CROW_ROUTE(app, "/api/emission")
         ([&](const crow::request &req) {
 
-            myxmr::jsonresponse r{evoblocks.json_emission()};
+            myxmr::jsonresponse r{evoxblocks.json_emission()};
 
             return r;
         });
@@ -723,7 +723,7 @@ main(int ac, const char* av[])
                 cerr << "Cant parse tx_prove as bool. Using default value" << endl;
             }
 
-            myxmr::jsonresponse r{evoblocks.json_outputs(
+            myxmr::jsonresponse r{evoxblocks.json_outputs(
                     remove_bad_chars(tx_hash),
                     remove_bad_chars(address),
                     remove_bad_chars(viewkey),
@@ -757,7 +757,7 @@ main(int ac, const char* av[])
                 cerr << "Cant parse tx_prove as bool. Using default value" << endl;
             }
 
-            myxmr::jsonresponse r{evoblocks.json_outputsblocks(
+            myxmr::jsonresponse r{evoxblocks.json_outputsblocks(
                     remove_bad_chars(limit),
                     remove_bad_chars(address),
                     remove_bad_chars(viewkey),
@@ -769,7 +769,7 @@ main(int ac, const char* av[])
         CROW_ROUTE(app, "/api/version")
         ([&](const crow::request &req) {
 
-            myxmr::jsonresponse r{evoblocks.json_version()};
+            myxmr::jsonresponse r{evoxblocks.json_version()};
 
             return r;
         });
@@ -782,7 +782,7 @@ main(int ac, const char* av[])
         ([&]() {
             uint64_t page_no {0};
             bool refresh_page {true};
-            return evoblocks.index2(page_no, refresh_page);
+            return evoxblocks.index2(page_no, refresh_page);
         });
     }
 

@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.5.0)
 
 set(PROJECT_NAME
-        evoblocks)
+        evoxblocks)
 
 
 project(${PROJECT_NAME})

@@ -7,7 +7,7 @@
 
 #define PATH_SEPARARTOR '/'
 
-#define EVO_AMOUNT(value) \
+#define EVOX_AMOUNT(value) \
     static_cast<double>(value) / 1e9
 
 #define REMOVE_HASH_BRAKETS(a_hash) \
@@ -222,7 +222,7 @@ get_payment_id(const transaction &tx,
 
 
 inline double
-get_evo(uint64_t core_amount)
+get_evox(uint64_t core_amount)
 {
     return static_cast<double>(core_amount) / 1e9;
 }
@@ -270,7 +270,7 @@ decrypt(const std::string &ciphertext,
 public_key
 get_tx_pub_key_from_received_outs(const transaction &tx);
 
-static string evo_amount_to_str(const uint64_t &evo_amount,
+static string evox_amount_to_str(const uint64_t &evox_amount,
                   string _format="{:0.9f}",
                   bool zero_to_question_mark = true)
 {
@@ -278,13 +278,13 @@ static string evo_amount_to_str(const uint64_t &evo_amount,
 
     if (!zero_to_question_mark)
     {
-        amount_str = fmt::format(_format, EVO_AMOUNT(evo_amount));
+        amount_str = fmt::format(_format, EVOX_AMOUNT(evox_amount));
     }
     else
     {
-        if (evo_amount > 0 && zero_to_question_mark == true)
+        if (evox_amount > 0 && zero_to_question_mark == true)
         {
-            amount_str = fmt::format(_format, EVO_AMOUNT(evo_amount));
+            amount_str = fmt::format(_format, EVOX_AMOUNT(evox_amount));
         }
     }
 

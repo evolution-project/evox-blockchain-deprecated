@@ -5,7 +5,7 @@ var config = {
     txMinConfirms: 4, // corresponds to CRYPTONOTE_DEFAULT_TX_SPENDABLE_AGE in Evolution
     txCoinbaseMinConfirms: 18, // corresponds to CRYPTONOTE_MINED_MONEY_UNLOCK_WINDOW in Evolution
     coinSymbol: 'EVOX',
-    openAliasPrefix: "evo",
+    openAliasPrefix: "evox",
     coinName: 'Evolution',
     coinUriPrefix: 'evolution',
     addressPrefix: 0x6362, // ev...MainNET

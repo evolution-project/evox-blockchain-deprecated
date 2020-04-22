@@ -99,7 +99,7 @@ function update_data() {
             row.append($('<td class="fees">N/A</td>'));
             let outputs = 0;
             for (let tx of b['txs']) {
-                outputs += tx['evo_outputs'];
+                outputs += tx['evox_outputs'];
             }
             row.append($('<td class="outputs">' + (outputs * COIN_FACTOR).toFixed(9) + '</td>'));
             row.append($('<td class="inputs">0/1/-</td>'));

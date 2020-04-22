@@ -165,17 +165,17 @@ MempoolStatus::read_mempool()
         // key images of inputs
         vector<txin_to_key> input_key_imgs;
 
-        // public keys and evo amount of outputs
+        // public keys and evox amount of outputs
         vector<pair<txout_to_key, uint64_t>> output_pub_keys;
 
-        // sum evo in inputs and ouputs in the given tx
+        // sum evox in inputs and ouputs in the given tx
         const array<uint64_t, 4> &sum_data = summary_of_in_out_rct(
                tx, output_pub_keys, input_key_imgs);
 
 
         double tx_size = static_cast<double>(_tx_info.blob_size)/1024.0;
 
-        double payed_for_kB = EVO_AMOUNT(_tx_info.fee) / tx_size;
+        double payed_for_kB = EVOX_AMOUNT(_tx_info.fee) / tx_size;
 
         last_tx.receive_time = _tx_info.receive_time;
 
@@ -186,12 +186,12 @@ MempoolStatus::read_mempool()
         last_tx.mixin_no          = sum_data[2];
         last_tx.num_nonrct_inputs = sum_data[3];
 
-        last_tx.fee_str               = xmreg::evo_amount_to_str(_tx_info.fee, "{:0.4f}", false);
-        last_tx.fee_nano_str          = xmreg::evo_amount_to_str(_tx_info.fee*1.0e6, "{:04.0f}", false);
+        last_tx.fee_str               = xmreg::evox_amount_to_str(_tx_info.fee, "{:0.4f}", false);
+        last_tx.fee_nano_str          = xmreg::evox_amount_to_str(_tx_info.fee*1.0e6, "{:04.0f}", false);
         last_tx.payed_for_kB_str      = fmt::format("{:0.4f}", payed_for_kB);
         last_tx.payed_for_kB_nano_str = fmt::format("{:04.0f}", payed_for_kB*1.0e6);
-        last_tx.evo_inputs_str        = xmreg::evo_amount_to_str(last_tx.sum_inputs , "{:0.3f}");
-        last_tx.evo_outputs_str       = xmreg::evo_amount_to_str(last_tx.sum_outputs, "{:0.3f}");
+        last_tx.evox_inputs_str        = xmreg::evox_amount_to_str(last_tx.sum_inputs , "{:0.3f}");
+        last_tx.evox_outputs_str       = xmreg::evox_amount_to_str(last_tx.sum_outputs, "{:0.3f}");
         last_tx.timestamp_str         = xmreg::timestamp_to_str_gm(_tx_info.receive_time);
 
         last_tx.txsize                = fmt::format("{:0.2f}", tx_size);
