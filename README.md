@@ -47,7 +47,7 @@ The key features of the Evolution Onion Blockchain Explorer are:
 
 
 
-## Compilation on Ubuntu 16.04/18.04
+## Compilation on Ubuntu 16.04 / 18.04 / 20.04
 
 ##### Compile latest Evolution development version
 
