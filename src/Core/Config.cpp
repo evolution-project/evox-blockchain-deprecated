@@ -21,14 +21,14 @@ GNU General Public License for more details.
 AppConfig GlobalConfig;
 
 // IntenseCoin Config (Default)
-#define RPC_FILENAME                            "arqma-wallet-rpc"
+#define RPC_FILENAME                            "evolution-wallet-rpc"
 #define RPC_HOSTNAME                            "127.0.0.1"
-#define DAEMON_ADDRESS                          "127.0.0.1:19994"
+#define DAEMON_ADDRESS                          "127.0.0.1:52922"
 #define RPC_JSON                                "/json_rpc"
 #define WALLET_PATH                             "Wallets/"
 #define COIN_OFFSET                             1000000000.0 // 1 x 10^9
 #define DEFAULT_MIXIN                           6
-#define COIN_ABBV                               std::string("ARQ");
+#define COIN_ABBV                               std::string("EVOX");
 #define STARTING_PORT_NUMBER                    11000
 #define MAX_RPC_LIMIT                           200
 #define RPC_ERROR_GIVEUP                        3
@@ -39,7 +39,7 @@ AppConfig GlobalConfig;
 #define FAUCET_PERCENTAGE_ALLOWANCE             0.0001
 #define MIN_DISCORD_ACCOUNT_IN_DAYS             (7.0*MICROSECOND_DAY)   // Days
 #define FAUCET_TIMEOUT                          (16.0*MICROSECOND_HOUR) // Hours
-#define VALID_ADDRESS_LENGTH                    97
+#define VALID_ADDRESS_LENGTH                    98
 #define INTEGRATED_ADDRESS_LENGTH               108
 #define TICKET_COST                             100 // Coins
 #define FACUET_DONATION_PERCENT                 0.20
@@ -54,10 +54,7 @@ AppConfig GlobalConfig;
 
 const DiscordID DiscordAdmins[] =
 {
-  367991107511910430,
-  360552578519531521,
-  437239546258784261,
-  402840927196020746,
+  208496265082830848
 
 };
 
